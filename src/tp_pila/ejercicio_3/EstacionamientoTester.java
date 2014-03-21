@@ -20,7 +20,7 @@ public class EstacionamientoTester {
         System.out.println("Opciones: \n"+"Ingrese 1 para agregar auto\n"+"Ingrese 2 para quitar auto\n"+
                 "Ingrese 3 para ver la recaudación\n"+"Ingrese 4 para salir\n");
         while (continuar){
-            System.out.println("ingrese la opcion elegida: ");
+            System.out.println("Ingrese la opcion elegida: ");
             int opcion= Integer.parseInt(br.readLine());
             switch (opcion){
                 case 1:
