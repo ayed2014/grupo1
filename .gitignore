@@ -1,5 +1,9 @@
 \.idea
 \out
-\src\pila
-\src\busqueda
-\src\prueba
+src/pila/
+src/busqueda/
+src/arbol/
+src/cola/
+src/lista/
+src/Scanner.java
+src/Scanner.rar
