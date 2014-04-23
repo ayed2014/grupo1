@@ -54,9 +54,8 @@ public class Metrovias {
                 if (aux.clientsRemaining()>0){
                     if (random<=3)
                         aux.removeClient(time);
-                    else
-                        aux.setIdleTime();
-                }
+                    else aux.setIdleTime();
+                } else aux.setIdleTime();
             }
         }
         for (int k=0;k<cashierAmount;k++) {
