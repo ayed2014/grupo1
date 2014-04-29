@@ -1,4 +1,6 @@
-package tp_ArBin_Rudolph.arbol;
+package tp_ArBin_Rudolph;
+
+import java.io.Serializable;
 
 /**
  * Created with IntelliJ IDEA.
@@ -7,7 +9,7 @@ package tp_ArBin_Rudolph.arbol;
  * Time: 13:32
  * To change this template use File | Settings | File Templates.
  */
-public class NodoDoble {
+public class NodoDoble implements Serializable{
     Object elem;
     NodoDoble leftSon;
     NodoDoble rightSon;

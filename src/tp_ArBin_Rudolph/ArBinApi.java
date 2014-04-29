@@ -1,7 +1,8 @@
-package tp_ArBin_Rudolph.arbol;
+package tp_ArBin_Rudolph;
 
 import cola.QueueD;
 
+import java.io.*;
 import java.util.ArrayList;
 
 /**
@@ -63,13 +64,14 @@ public class ArBinApi {
         else return 0;
     }
 
-
+    //Recibe un árbol binario y devuelve el peso del mismo
     public static int weight(ArBin a) {
         if (a.isEmpty())
             return 0;
         else
             return 1 + weight(a.getLeft()) + weight(a.getRight());
     }
+    //Recibe un árbol binario y devuelve la cantidad de hojas que tiene
     public static int leaves(ArBin a) {
         if (a.isEmpty()) {
             return 0;
@@ -78,6 +80,7 @@ public class ArBinApi {
         } else
             return leaves(a.getLeft()) + leaves(a.getRight());
     }
+    //Recibe un árbol binario y un element, y devuelve la cantidad de veces que se repite el elemento en el árbol
     public static int elemRepeat(ArBin a, Object elem) {
         int times = 0;
         if (a.isEmpty()) {
@@ -88,10 +91,11 @@ public class ArBinApi {
             return times + (elemRepeat(a.getLeft(), elem) + elemRepeat(a.getRight(), elem));
         }
     }
+    //Recibe un árbol binario y el nivel del árbol, y devuelve la cantidad de elementos que hay en dicho nivel.
     public static int elemLevelAmount(ArBin a, int level){
         return elemLevelAmount(a,level, ArBinApi.high(a));
     }
-    public static int elemLevelAmount(ArBin a, int level,int maxlevel) {
+    private static int elemLevelAmount(ArBin a, int level,int maxlevel) {
         if (level<=maxlevel){
             if (a.isEmpty()) {
                 return 0;
@@ -106,6 +110,7 @@ public class ArBinApi {
             }
             return -1;
         }
+    //Recibe un árbol binario y devuelve la altura del mismo.
     public static int high(ArBin a) {
         if (a.isEmpty()) {
             return -1;
@@ -117,7 +122,7 @@ public class ArBinApi {
         }
     }
 
-
+    //Recibe dos árboles binarios y devuelve un boolean indicando si son iguales
     public static boolean areEquals(ArBin a, ArBin b) {
         if ((a.isEmpty()) && (b.isEmpty()))
             return true;
@@ -134,6 +139,7 @@ public class ArBinApi {
 
 
     }
+    //Recibe dos árboles binarios y devuelve un boolean indicando si son isomorfos
     public static boolean isomorf(ArBin a, ArBin b) {
         if ((a.isEmpty() && b.isEmpty())) {
             return true;
@@ -143,6 +149,7 @@ public class ArBinApi {
             return false;
         }
     }
+    //Recibe dos árboles binarios y devuelve un boolean indicando si son similares
     public static boolean alike(ArBin a, ArBin b){
         if (a.isEmpty() && b.isEmpty())
             return true;
@@ -156,6 +163,7 @@ public class ArBinApi {
             return areAlike(a.getLeft(),b)&& areAlike(a.getRight(),b);
         else return false;
     }
+    //Recibe un árbol binario y devuelve un boolean indicando si es completo
     public static boolean complete(ArBin a) {
         if (a.isEmpty())
             return true;
@@ -165,18 +173,20 @@ public class ArBinApi {
             return true;
         else return false;
     }
+    //Recibe un árbol binario y devuelve un boolean indicando si es lleno
     public static boolean full(ArBin a){
         return full(a, ArBinApi.high(a), 0);
     }
-    public static boolean full(ArBin a, int depth, int currentLevel){
+    private static boolean full(ArBin a, int depth, int currentLevel){
         if (a.isEmpty()||(a.getRight().isEmpty() && a.getLeft().isEmpty())){
             if (depth==currentLevel)
                 return true;
             else return false;
         } else if (!a.getLeft().isEmpty() && !a.getRight().isEmpty())
-            return (full(a.getLeft(),depth,currentLevel+1)||full(a.getRight(),depth,currentLevel+1));
+            return (full(a.getLeft(),depth,currentLevel+1)&&full(a.getRight(),depth,currentLevel+1));
         else return false;
     }
+    //Recibe un árbol binario de enteros y devuelve un boolean indicando si es estable
     public static boolean stableTree(ArBin a) {
         if (a.isEmpty())
             return true;
@@ -202,6 +212,7 @@ public class ArBinApi {
             else return false;
         }
     }
+    //Recibe dos árboles binarios (a y b)y devuelve un boolean indicando si el arbol b ocurre en a
     public static boolean ocurrsIn(ArBin a, ArBin b){
         if (a.isEmpty() || b.isEmpty()){
             return false;
@@ -209,11 +220,12 @@ public class ArBinApi {
             return areEquals(a,b);
         else return (ocurrsIn(a.getLeft(),b) || ocurrsIn(a.getRight(),b));
     }
+    //Recibe un árbol binario e imprime la frontera
     public static void showBorder(ArBin a) {
         if (a.isEmpty()) {
             System.out.println("El árbol esta vacio");
         } else if (a.getRight().isEmpty() && a.getLeft().isEmpty()) {
-            System.out.println(a.getRoot());
+            System.out.print(a.getRoot()+" ");
         } else {
             if (!a.getLeft().isEmpty())
                 showBorder(a.getLeft());
@@ -221,6 +233,7 @@ public class ArBinApi {
                 showBorder(a.getRight());
         }
     }
+    //Recibe un árbol binario y devuelve la frontera
     public static ArrayList border(ArBin a) {
         return border(a, new ArrayList());
     }
@@ -238,6 +251,38 @@ public class ArBinApi {
         return arr;
     }
 
+    //Se le pasa un arbol y un sting con el nombre y se guarda en disco
+    public static void store(ArBin arBin, String name) throws IOException {
+        try {
+            FileOutputStream fs = new FileOutputStream(name+".ser");
+            ObjectOutputStream os = new ObjectOutputStream(fs);
+            os.writeObject(arBin);
+            os.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    //A partir de un nombre busca en disco y devuelve un árbol binario si existe
+    public static ArBin load(String name) {
+        ArBin arBin = null;
+        try {
+            FileInputStream fis = new FileInputStream(name+".ser");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            arBin = (ArBin) ois.readObject();
+            ois.close();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return arBin;
+
+
+    }
 
     private static class LevelOutOfBoundsExeption extends Throwable {
     }

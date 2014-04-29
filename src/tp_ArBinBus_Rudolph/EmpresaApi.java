@@ -2,6 +2,10 @@ package tp_ArBinBus_Rudolph;
 
 import lista.DinamicList;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 /**
  * Created with IntelliJ IDEA.
  * User: rudolpha
@@ -39,10 +43,35 @@ public class EmpresaApi {
         printInorder(a.getRight());
     }
 
-    public static ArBinBus modify(ArBinBus a, Lampara lamp){
+    public static ArBinBus modify(ArBinBus a, Lampara lamp) throws IOException {
+        InputStreamReader isr = new InputStreamReader(System.in);
+        BufferedReader br = new BufferedReader (isr);
         Lampara aux= (Lampara)a.search(lamp);
-
-
-
+        while(true){
+            System.out.println("Para modificar el tipo de lampara ("+aux.getType()+") ingrese 1");
+            System.out.println("Para modificar los Watts ("+aux.getWatts()+") ingrese 2");
+            System.out.println("Para modificar la cantidad ("+aux.getAmount()+") ingrese 3");
+            System.out.println("Ingrese 4 para terminar la ejecución");
+            System.out.println("Ingrese la opción");
+            int opcion= Integer.parseInt(br.readLine()) ;
+            switch (opcion){
+                case 1:
+                    System.out.println("Ingrese el nuevo tipo: ");
+                    aux.setType(br.readLine());
+                    break;
+                case 2:
+                    System.out.println("Ingrese el nuevo número de Watts de la lampara: ");
+                    aux.setWatts(Integer.parseInt(br.readLine()));
+                    break;
+                case 3:
+                    System.out.println("Ingrese la nueva cantidad de lamparas: ");
+                    aux.setAmount(Integer.parseInt(br.readLine()));
+                    break;
+            }
+            if (opcion==4)
+                break;
+        }
+        return a;
     }
+
 }
