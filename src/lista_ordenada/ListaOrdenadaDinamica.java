@@ -1,5 +1,7 @@
 package lista_ordenada;
 
+import javax.xml.soap.Node;
+
 /**
  * Created with IntelliJ IDEA.
  * User: rudolpha
@@ -28,38 +30,37 @@ public class ListaOrdenadaDinamica {
             System.out.println("The Object is not Comparable");
     }
     public void insert(Comparable x){
-        Nodo nuevo = new Nodo();
-        Nodo aux = cabecera.next;
-        while (aux.next!=null){
-            if (x.compareTo((Comparable)aux.next.elem )<0){
-                nuevo.next=aux.next;
-                aux.next =nuevo;
-                break;
-            }else aux = aux.next;
-        }
-        if (aux.next==nuevo){
-            aux.next=nuevo;
-        }
+        window = cabecera;
+        try {
+            while (window.next.elem.compareTo(x) <= 0) {
+                window = window.next;
+            }
+        } catch (NullPointerException ignored){}
+        window.next = new Nodo(x, window.next);
+        window = window.next;
+        quantity++;
     }
     public void next() {
         if (window.next.next!=null)
             window=window.next;
     }
     public void before() {
-        Nodo before= new Nodo();
-        Nodo aux;
-        aux=cabecera.next;
-        while(aux!=window){
-            before=aux;
-            aux=aux.next;
+        if (window != cabecera.next) {
+            Nodo aux = cabecera;
+            while (window != aux.next) {
+                aux = aux.next;
+            }
+            window = aux;
         }
-        window=before;
     }
-    public void goTo(int x) {
-
+    public void goTo(int index) {
+        window = cabecera.next;
+        for(int i = 0; i < index; i++){
+            window = window.next;
+        }
     }
     public boolean isEmpty() {
-        return (quantity==0);
+        return (cabecera.next==null);
     }
     public void empty() {
         cabecera.next=centinela;
@@ -68,15 +69,14 @@ public class ListaOrdenadaDinamica {
         return window.elem;
     }
     public void delete() {
-        if (quantity!=0){
-            window.elem=window.next.elem;
-            window.next=window.next.next;
-            quantity--;
-        }
-        if (window.equals(centinela))
-            before();
+        if(isEmpty()) throw new NullPointerException("This List is empty");
+        before();
+        window.next = window.next.next;
+        window = window.next;
+        if(window == centinela) before();
+        quantity--;
     }
-    public void modify(Object elem) {
+    public void modify(Comparable elem) {
         window.elem=elem;
     }
     public void isFirst(){

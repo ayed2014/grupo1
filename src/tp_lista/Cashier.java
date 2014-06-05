@@ -1,6 +1,7 @@
 package tp_lista;
 
-import tp_Cola.QueueD;
+
+import cola.QueueD;
 
 /**
  * Created with IntelliJ IDEA.
